@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std;
+int ucln(int a, int b) {
+while (b != 0) {
+int temp = b;
+b = a % b;
+a = temp;
+}
+return a;
+}
+int main() {
+int m, n;
+cin >> m >> n;
+cout << ucln(m, n) << endl;
+return 0;
+}
