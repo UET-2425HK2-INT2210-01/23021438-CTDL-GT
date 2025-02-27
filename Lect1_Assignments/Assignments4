@@ -1,0 +1,27 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+void sapxep(vector<int>& mang, int n) {
+for (int i = 0; i < n - 1; i++) {
+for (int j = 0; j < n - i - 1; j++) {
+if (mang[j] > mang[j + 1]) {
+int x = mang[j];
+mang[j] = mang[j + 1];
+mang[j + 1] = x;
+}
+}
+}
+}
+int main() {
+int n;
+cin >> n;
+vector<int> mang(n);
+for (int i = 0; i < n; i++) {
+cin >> mang[i];
+}
+sapxep(mang, n);
+for (int i = 0; i < n; i++) {cout << mang[i] << " ";
+}
+cout << endl;
+return 0;
+}
