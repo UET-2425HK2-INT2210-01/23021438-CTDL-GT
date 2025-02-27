@@ -1,0 +1,80 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+	int data;
+	Node* next;
+};
+
+class Linkedlist {
+	Node* head;
+public:
+	Linkedlist(): head(NULL) {}
+	
+	void insertNode(int x, int p) {
+		if (p < 1) {
+			return;
+		}
+		Node* newnode = new Node();
+		newnode->data = x;
+		if (p == 1) {
+			newnode->next = head;
+			head = newnode;
+			return;
+		}
+		Node* temp = head;
+		for (int i = 1; i < p - 1 && temp; i++) {
+			temp = temp->next;
+		}
+		if (!temp) {
+			delete newnode;
+			return;
+		}
+		newnode->next = temp->next;
+		temp->next = newnode;
+	}
+
+	void deleteNode(int p) {
+		if (p < 1 || head == NULL) {
+			return;
+		}
+		if (p == 1) {
+			Node* nodeToDelete = head;
+			head = head->next;
+			delete nodeToDelete;
+			return;
+		}
+		Node* temp = head;
+		for (int i = 1; i < p - 1 && temp; i++) {
+			temp = temp->next;
+		}
+		if (!temp || !temp->next) {
+			return;
+		}
+		Node* nodeToDelete = temp->next;
+		temp->next = temp->next->next;
+		delete nodeToDelete;
+	}
+};
+
+int main(){
+	int n;
+	cin >> n;
+	Linkedlist list;
+	for (int i = 0; i < n; i++) {
+		string command;
+		cin >> command;
+		if (command == "insert") {
+			int x, p;
+			cin >> x >> p;
+			list.insertNode(x, p);
+		}
+		if (command == "delete") {
+			int p;
+			cin >> p;
+			list.deleteNode(p);
+		}
+	}
+	return 0;
+}
