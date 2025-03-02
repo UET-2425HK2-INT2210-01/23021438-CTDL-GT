@@ -1,0 +1,16 @@
+#include <iostream>
+
+using namespace std;
+
+int luyThua2vongLap(int n) {
+	int result = 1; // Khai báo result = 1
+	for (int i = 0; i < n; i++) {
+		result *= 2;
+	} // Cho result nhân với 2 n lần
+	return result; // Trả về result
+} // Độ phức tạp O(n)
+
+int luyThua2deQuy(int n) {
+	if (n == 0) return 1; // Nếu n = 0 thì hàm trả về 1
+	else return 2 * luyThua2deQuy(n - 1); // Không thì gọi lại hàm với n - 1
+} // Độ phức tạp O(n)
