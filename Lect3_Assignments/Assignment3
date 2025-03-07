@@ -28,7 +28,7 @@ public:
         rear = (rear + 1) % capacity;  // Tăng rear
         arr[rear] = x;  // Gán x vào phần tử cuối
         size++;  // Tăng size
-    }
+    }  // Độ phức tạp O(1)
 
     // Xóa phần tử ở đầu queue
     void dequeue() {
@@ -37,4 +37,4 @@ public:
         }
         front = (front + 1) % capacity;  // Tăng front
         size--;  // Giảm size
-    }
+    }  // Độ phức tạp O(1)
