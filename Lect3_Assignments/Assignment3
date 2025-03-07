@@ -1,0 +1,40 @@
+#include <iostream>
+
+using namespace std;
+
+class Queue {
+private:
+    int* arr;      // Mảng lưu trữ phần tử
+    int capacity;  // Kích thước tối đa của queue
+    int front;     // Chỉ số phần tử đầu tiên
+    int rear;      // Chỉ số phần tử cuối cùng
+    int size;      // Số lượng phần tử hiện có
+
+public:
+    // Khởi tạo queue
+    Queue(int n) {
+        capacity = n;
+        arr = new int[capacity];
+        front = 0;
+        rear = -1;
+        size = 0;
+    }
+
+    // Thêm phần tử vào cuối queue
+    void enqueue(int x) {
+        if (size == capacity) {
+            return;  // Trả về nêu queue đầy
+        }
+        rear = (rear + 1) % capacity;  // Tăng rear
+        arr[rear] = x;  // Gán x vào phần tử cuối
+        size++;  // Tăng size
+    }
+
+    // Xóa phần tử ở đầu queue
+    void dequeue() {
+        if (size == 0) {
+            return;  // Trả về nếu queue rỗng
+        }
+        front = (front + 1) % capacity;  // Tăng front
+        size--;  // Giảm size
+    }
