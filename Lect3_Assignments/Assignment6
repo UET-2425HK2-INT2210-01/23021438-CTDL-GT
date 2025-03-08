@@ -1,0 +1,37 @@
+#include <iostream>
+using namespace std;
+
+struct Node {  // Cấu trúc Node
+    int data;
+    Node* next;
+};
+
+class Stack {
+private:
+    Node* top;
+
+public:
+    Stack() {
+        top = nullptr;  // Khởi tạo ngăn xếp rỗng
+    }
+
+    bool isEmpty() {
+        return top == nullptr;
+    }
+
+    void push(int value) {  // Thêm phần tử vào Stack
+        Node* newNode = new Node();  // Tạo 1 Node mới
+        newNode->data = value;  // Gán giá trị value cho Node mới
+        newNode->next = top;  // trỏ Node mới tới đầu
+        top = newNode;  // Đặt Node mới thành top
+    }  // Độ phức tạp O(1)
+
+    int pop() {
+        if (isEmpty()) {
+            return -1;  // Trả về nếu ngăn xếp rỗng
+        }
+        Node* temp = top;  // Tạo con trỏ tới top
+        top = top->next;  // Đặt lại top mới 
+        delete temp;  // Xoá node mà temp trỏ vào
+    }  // Độ phức tạp O(1)
+};
