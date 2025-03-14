@@ -15,7 +15,7 @@ private:
 public:
     void enqueue(int x, int p) {
         if (size >= 100) return;
-        pq[size++] = { x, p };
+        pq[size++] = {x, p};
         for (int i = size - 1; i > 0; i--) {
             if (pq[i].priority > pq[i - 1].priority) {
                 swap(pq[i], pq[i - 1]);
