@@ -1,0 +1,63 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int value;
+    int priority;
+};
+
+class PriorityQueue {
+private:
+    Node pq[100];
+    int size = 0;
+
+public:
+    void enqueue(int x, int p) {
+        if (size >= 100) return;
+        pq[size++] = { x, p };
+        for (int i = size - 1; i > 0; i--) {
+            if (pq[i].priority > pq[i - 1].priority) {
+                swap(pq[i], pq[i - 1]);
+            }
+            else break;
+        }
+    }
+
+    void dequeue() {
+        if (size > 0) {
+            for (int i = 0; i < size - 1; i++) {
+                pq[i] = pq[i + 1];
+            }
+            size--;
+        }
+    }
+
+    void printQueue() {
+        for (int i = 0; i < size; i++) {
+            cout << "(" << pq[i].value << ", " << pq[i].priority << ")";
+            if (i != size - 1) cout << "; ";
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    int n;
+    cin >> n;
+    PriorityQueue pq;
+    for (int i = 0; i < n; i++) {
+        string command;
+        cin >> command;
+        if (command == "enqueue") {
+            int x, p;
+            cin >> x >> p;
+            pq.enqueue(x, p);
+        }
+        else if (command == "dequeue") {
+            pq.dequeue();
+        }
+    }
+    pq.printQueue();
+    return 0;
+}
