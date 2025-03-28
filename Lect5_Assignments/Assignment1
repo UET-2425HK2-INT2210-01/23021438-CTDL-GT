@@ -1,0 +1,147 @@
+#include <iostream>
+using namespace std;
+
+const int N = 1000;
+
+struct Node { // Cấu trúc Node
+    int value; // Giá trị Node
+    Node* firstChild; // Con trỏ đên con đầu tiên
+    Node* nextSibling; // Con trỏ đến anh em tiếp theo
+    Node(int val) { // Khởi tạo Node
+        value = val;
+        firstChild = nullptr;
+        nextSibling = nullptr;
+    }
+};
+
+class Tree {
+private:
+	int height; // Chiều cao cây
+	Node* root; // Con trỏ đánh dấu gốc
+	bool isChild[N]; // Hàm xác định node có phải con không
+    Node* nodeList[N]; // Danh sách đến các node 
+
+public:
+    Tree() { // Khởi tạo cây
+        root = nullptr;
+        for (int i = 0; i < N; i++) {
+            nodeList[i] = nullptr;
+            isChild[i] = false;
+        }
+        height = 0;
+    }
+
+    void addChild(int u, int v) {
+        if (nodeList[u] == nullptr) nodeList[u] = new Node(u); // Kiểm tra node u, v đã tồn tại chưa
+        if (nodeList[v] == nullptr) nodeList[v] = new Node(v);
+        isChild[v] = true; // Đánh dấu v là con
+        Node* parent = nodeList[u]; // Đánh dấu node cha, con 
+        Node* child = nodeList[v];
+        if (parent->firstChild == nullptr) {
+            parent->firstChild = child; // Gán con đầu cho node cha
+        }
+        else {
+            Node* temp = parent->firstChild;
+            while (temp->nextSibling != nullptr) {
+                temp = temp->nextSibling; // Tìm node con cuối cùng của node cha
+            }
+            temp->nextSibling = child; // Gán anh em tiếp theo cho node con cuối cùng
+        }
+    }
+
+    void updateRoot(int n) { // Hàm cập nhật root
+        for (int i = 1; i <= n; i++) { 
+            if (nodeList[i] != nullptr && !isChild[i]) { // Tìm node không phải con của node nào khác
+                root = nodeList[i]; // Cập nhật root
+                break;
+            }
+        }
+    }
+
+    int calculateHeight(Node* node) { // Hàm tính chiều cao cây
+        if (!node) return 0;
+        int maxHeight = 0;
+        Node* child = node->firstChild;
+        while (child) { // Duyệt từng con của node 
+            maxHeight = max(maxHeight, 1 + calculateHeight(child)); // Lấy chiều cao lớn nhất với từng nhánh
+            child = child->nextSibling;
+        }
+        return maxHeight; // Trả về chiều cao lớn nhất 
+    }
+
+    void preorder(Node* node) { // Duyệt Pre
+        if (!node) return;
+        cout << node->value << " "; // In ra giá trị của node
+        Node* child = node->firstChild;
+        while (child) { // Duyệt từng nhánh nhỏ của từng con
+            preorder(child); // Đệ quy đến con của từng node 
+            child = child->nextSibling; // Duyệt đến anh em tiếp theo
+        }
+    }
+
+    void postorder(Node* node) { // Duyệt Pos
+        if (!node) return;
+        Node* child = node->firstChild;
+        while (child) { // Duyệt đến các nhánh nhỏ nhất trước 
+            postorder(child); // Đệ quy đến các nhánh nhỏ hơn
+            child = child->nextSibling; // Duyệt đến anh em tiếp theo 
+        }
+        cout << node->value << " "; // In ra giá trị của node
+    }
+
+    bool isBinary(Node* node) { // Hàm kiểm tra cây nhị phân
+        if (!node) return true;
+        int childCount = 0; // Biến đếm số con
+        Node* child = node->firstChild;
+        while (child) { // Duyệt từng nhánh 
+            childCount++;
+            if (childCount > 2) return false; // Trả về false nếu nhánh có nhiều hơn 2 con
+            if (!isBinary(child)) return false; // Trả về false nếu không phải cây nhị phân
+            child = child->nextSibling; // Duyệt đến anh em tiếp theo 
+        }
+        return true;
+    }
+
+    void inorder(Node* node) { // Duyệt In
+        if (!node) return;
+        Node* child = node->firstChild;
+        if (child) { // Duyệt từ con trái qua cha rồi đến con phải 
+            inorder(child);
+            child = child->nextSibling;
+        }
+        cout << node->value << " "; // In ra giá trị của node 
+        if (child) {
+            inorder(child);
+        }
+    }
+
+    void process() { // Hàm chạy chương trình
+        height = calculateHeight(root);
+        cout << height << endl; // In ra chiều cao cây
+        preorder(root); // In ra thứ tự duyệt pre
+        cout << endl; 
+        postorder(root); // In ra thứ tự duyệt pos
+        cout << endl;
+        if (isBinary(root)) {
+            inorder(root); // In ra thứ tự duyệt in nếu là cây nhị phân
+            cout << endl;
+        }
+        else {
+            cout << "NOT BINARY TREE" << endl; // In ra thông báo không phải cây nhị phân nếu không phải
+        }
+    }
+};
+
+int main() {
+    int n, m;
+    cin >> n >> m; // Nhập N, M
+    Tree tree; // Khai báo cây
+    for (int i = 0; i < m; i++) { // Tạo cây từ các node u, v
+        int u, v;
+        cin >> u >> v;
+        tree.addChild(u, v);
+    }
+    tree.updateRoot(n); // Cập nhật root
+    tree.process(); // Chạy chương trình
+    return 0;
+}
