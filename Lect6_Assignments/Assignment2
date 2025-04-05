@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> heap;
+
+// Hàm đẩy phần tử lên đúng vị trí
+void heapifyUp(int index) {
+    while (index > 0) {
+        int parent = (index - 1) / 2;
+        if (heap[index] > heap[parent]) { // So sánh phần tử mới với node cha
+            swap(heap[index], heap[parent]); 
+            index = parent; // Nếu lớn hơn thì đẩy lên
+        }
+        else break;
+    }
+}
+
+// Hàm chèn phần tử mới vào heap
+void insert(int val) {
+    heap.push_back(val); // Thêm phần tủ mới vào vị trí cuối cùng của mảng
+    heapifyUp(heap.size() - 1); // Đẩy phần tử mới lên đúng vị trí
+}
+
+// Hàm đẩy phần tử xuống đúng vị trí (heapify-down)
+void heapifyDown(int index) {
+    int size = heap.size();
+    while (index < size) {
+        int left = 2 * index + 1;
+        int right = 2 * index + 2;
+        int max = index;
+        if (left < size && heap[left] > heap[max]) max = left;
+        if (right < size && heap[right] > heap[max]) max = right; // So sánh với các node con 
+        if (max != index) {
+            swap(heap[index], heap[max]);
+            index = max; // Đẩy node xuống nếu nhỏ hơn node con
+        }
+        else break;
+    }
+}
+
+// Hàm xoá phần tử của heap
+void deleteNode(int val) {
+    int index = -1;
+    for (int i = 0; i < heap.size(); ++i) {
+        if (heap[i] == val) {
+            index = i;
+            break; // Tìm vị trí của node cần xoá
+        }
+    }
+    if (index == -1) return; // Không tìm thấy thì tra về 
+    heap[index] = heap.back();
+    heap.pop_back(); // Đẩy phần tử xuống cuối mảng rồi xoá
+    if (index < heap.size()) { // Cập nhật lại vị trí 
+        heapifyUp(index);
+        heapifyDown(index);
+    }
+}
+
+int main() {
+    int arr[] = { 2, 1, 10, 6, 3, 8, 7, 13, 20 };
+    for (int num : arr) insert(num);
+    insert(14);
+    insert(0);
+    insert(35);
+    deleteNode(6);
+    deleteNode(13);
+    deleteNode(35);
+    return 0;
+}
