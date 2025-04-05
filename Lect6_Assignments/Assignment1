@@ -11,7 +11,7 @@ struct Node {
 
 Node* root = NULL; // Khởi tạo gốc
 
-// Chèn node mới vào cây
+// Hàm chèn node mới vào cây
 void insert(int val) {
     if (!root) {
          root = new Node(val);
@@ -36,13 +36,13 @@ void insert(int val) {
     }
 }
 
-// Tìm node nhỏ nhất của cây
+//  Hàm tìm node nhỏ nhất của cây
 Node* findMin(Node* curr) {
     while (curr->left) curr = curr->left;
     return curr;
 }
 
-// Xoá node của cây 
+// Hàm xoá node của cây 
 void deleteNode(int val) {
     Node* curr = root;
     Node* parent = NULL;
