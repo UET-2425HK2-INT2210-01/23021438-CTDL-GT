@@ -1,0 +1,88 @@
+#include <iostream>
+using namespace std;
+
+// Cấu trúc node cho cây nhị phân
+struct Node {
+    int data; // Giá trị của node 
+    Node* left; // Con trỏ đến con trái 
+    Node* right; // Con trỏ đến con phải 
+    Node(int x) : data(x), left(NULL), right(NULL) {} // Khởi tạo node
+};
+
+Node* root = NULL; // Khởi tạo gốc
+
+// Chèn node mới vào cây
+void insert(int val) {
+    if (!root) {
+         root = new Node(val);
+         return; // Nếu chưa có gốc thì thêm node làm gốc và trả về 
+    }
+    Node* curr = root;
+    while (true) { // Đặt trong vòng lặp đến khi chèn được node mới 
+        if (val < curr->data) { // Nếu giá trị node mới bé hơn node cha thì di chuyển về bên phải
+            if (!curr->left) { // Nếu node cha chưa có con phải
+                curr->left = new Node(val);
+                return; // Gắn node mới vào con phải node cha
+            }
+            curr = curr->left; // Không thì tiếp tục di chuyển về bên phải
+        }
+        else { // Nếu giá trị node mới lớn hơn node cha thì di chuyển về bên phải
+            if (!curr->right) { // Nếu node cha chưa có con trái
+                curr->right = new Node(val);
+                return; // Gắn node mới vào con trái node cha
+            }
+            curr = curr->right; // Không thì tiếp tục di chuyển về bên trái
+        }
+    }
+}
+
+// Tìm node nhỏ nhất của cây
+Node* findMin(Node* curr) {
+    while (curr->left) curr = curr->left;
+    return curr;
+}
+
+// Xoá node của cây 
+void deleteNode(int val) {
+    Node* curr = root;
+    Node* parent = NULL;
+    while (curr && curr->data != val) { // Tìm node có giá trị val 
+        parent = curr;
+        if (val < curr->data) curr = curr->left;
+        else curr = curr->right;
+    }
+    if (!curr) return; // Nếu không tìm thấy thì trả về
+    if (!curr->left && !curr->right) { // Nếu Node cần xoá không có con
+        if (!parent) root = NULL;
+        if (parent->left == curr) parent->left = nullptr;
+        else parent->right = nullptr;
+        delete curr; // Thì xoá node và liên kết
+        return;
+    }
+    else if (!curr->left || !curr->right) { // Nếu node cần xoá có 1 con
+        Node* child = (curr->left) ? curr->left : curr->right; // Đánh dấu con của node
+        if (parent->left == curr) parent->left = child;
+        else parent->right = child;
+        delete curr; // Xoá node và đặt lại liên kết
+        return;
+    }
+    else { // Nếu node cần xoá có 2 con
+        Node* minNode = findMin(curr->right); // Tìm con nhỏ nhất của nhánh bên trái 
+        int minValue = minNode->data;
+        deleteNode(minValue); // Xoá vị trí con nhỏ nhất 
+        curr->data = minValue; // Đổi giá trị của con nhỏ nhất với node cần xoá
+        return;
+    }
+}
+
+int main() {
+    int arr[] = { 2, 1, 10, 6, 3, 8, 7, 13, 20 };
+    for (int num : arr) insert(num);
+    insert(14);
+    insert(0);
+    insert(35);
+    deleteNode(6);
+    deleteNode(13);
+    deleteNode(35);
+    return 0;
+}
