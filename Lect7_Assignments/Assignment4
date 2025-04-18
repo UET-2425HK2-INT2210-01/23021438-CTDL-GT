@@ -1,0 +1,19 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+void generateBinary(int n, string result) { // Hàm in ra từng chuỗi nhị phân n phần tử
+    if (result.length() == n) {
+        cout << result << endl;
+        return; // In ra khi chuỗi đủ n phần tử 
+    }
+    generateBinary(n, result + "0"); 
+    generateBinary(n, result + "1"); // Gọi đệ quy để thêm vào chuỗi nhị phân phần tử tiếp theo
+}
+
+int main() {
+    int n;
+    cin >> n;
+    generateBinary(n, "");
+    return 0;
+}
