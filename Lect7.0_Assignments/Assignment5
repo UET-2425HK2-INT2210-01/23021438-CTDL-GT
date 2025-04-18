@@ -1,9 +1,9 @@
 #include <iostream>
 using namespace std;
 
-int numeral(int n) {
+int numeral(int n) { // Hàm đếm số chữ số của n
 	if (n / 10 == 0) return 1;
-	return 1 + numeral(n / 10);
+	return 1 + numeral(n / 10); // Hàm gọi đệ quy để tính số lần chia cho 10
 }
 
 int main() {
