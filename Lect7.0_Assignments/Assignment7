@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+
+int revNumber(int n, int revNum = 0) { // Hàm đảo ngược chữ số của n
+	if (n == 0) return revNum;
+	return revNumber(n / 10, revNum * 10 + n % 10); // Lưu từng chữ số n vào revNum
+}
+
+int main() {
+	int n;
+	cin >> n;
+	int result = revNumber(n);
+	cout << result << endl;
+	return 0;
+}
