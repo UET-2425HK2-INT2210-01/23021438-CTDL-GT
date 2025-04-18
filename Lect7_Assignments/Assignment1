@@ -1,0 +1,40 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <sstream>
+using namespace std;
+
+void sort(vector<double>& vec) { // Hàm sắp xếp dãy tăng dần 
+    int n = vec.size();
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < n; j++) {
+            if (vec[j] < vec[minIndex]) { // So sánh từng phần tử với các phần tử sau nó 
+                minIndex = j;
+            }
+        }
+        swap(vec[i], vec[minIndex]); // Nếu phần tử sau nó nhỏ hơn thì đẩy lên 
+    }
+}
+
+int main() {
+    ifstream input("numbers.txt");
+    ofstream output("numbers.sorted"); 
+    vector<double> numbers;
+    string line;
+    while (getline(input, line)) {
+        stringstream ss(line);
+        double num;
+        while (ss >> num) {
+            numbers.push_back(num); // Lấy từng phần tử trong file đẩy vào mảng numbers
+        }
+    }
+    sort(numbers); // Săp xếp mảng
+    for (size_t i = 0; i < numbers.size(); ++i) {
+        output << numbers[i] << " "; // Đẩy mảng đã sắp xếp vào file
+    }
+    output << endl;
+    input.close();
+    output.close();
+    return 0;
+}
