@@ -1,0 +1,30 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void generatePermutations(int pos, vector<int>& perm, vector<bool>& used, int n) {
+    if (pos == n) {
+        for (int num : perm) {
+            cout << num;
+        }
+        cout << endl;
+        return; // In ra chuỗi khi đủ n phần tử 
+    }
+    for (int i = 1; i <= n; ++i) {
+        if (!used[i - 1]) {
+            used[i - 1] = true; // Đánh dấu các phần tử đã được sử dụng 
+            perm[pos] = i; // Thêm phần tử vào chuổi hiện tại 
+            generatePermutations(pos + 1, perm, used, n); // Đệ quy vị trí tiếp theo
+            used[i - 1] = false; // Sau khi đệ quy hết các trường hợp nhánh thì bỏ đánh dấu để thử trường hợp khác 
+        }
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> perm(n);
+    vector<bool> used(n, false);
+    generatePermutations(0, perm, used, n);
+    return 0;
+}
