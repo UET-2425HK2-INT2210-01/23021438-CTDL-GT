@@ -1,0 +1,71 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+void findMaxSubmatrix(const vector<vector<int>>& matrix, int m, int n, int& r1, int& c1, int& r2, int& c2, int& maxSum) {
+    maxSum = INT_MIN;
+    bool allNegative = true;
+    int maxElement = INT_MIN;
+
+    for (int left = 0; left < n; ++left) {
+        vector<int> temp(m, 0); // Lưu tổng tích luỹ các hàng từ left đến right
+        for (int right = left; right < n; ++right) {
+            for (int i = 0; i < m; ++i) { // Cập nhật temp với cột right hiện tại
+                temp[i] += matrix[i][right];
+                if (matrix[i][right] > 0) allNegative = false;
+                maxElement = max(maxElement, matrix[i][right]); // Cập nhật phần tử lớn nhất 
+            }
+            int currentSum = 0, startRow = 0;
+            for (int i = 0; i < m; ++i) { // Tìm tổng lớn nhất với mỗi temp
+                if (currentSum + temp[i] < temp[i]) {
+                    currentSum = temp[i];
+                    startRow = i; // Bắt đầu chuỗi mới 
+                }
+                else {
+                    currentSum += temp[i]; // Mở rộng chuỗi 
+                }
+                if (currentSum > maxSum) { // Cập nhật vị trí và tổng lớn nhất
+                    maxSum = currentSum;
+                    r1 = startRow;
+                    r2 = i;
+                    c1 = left;
+                    c2 = right;
+                }
+            }
+        }
+    }
+
+    if (allNegative) { // Xử lý trường hợp tất cả đều âm
+        maxSum = maxElement;
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (matrix[i][j] == maxElement) {
+                    r1 = r2 = i;
+                    c1 = c2 = j;
+                    return; // Trả về phần tử lớn nhất
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    ifstream in("matrix.txt");
+    ofstream out("matrix.out");
+    int m, n;
+    in >> m >> n;
+    vector<vector<int>> matrix(m, vector<int>(n));
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            in >> matrix[i][j];
+        }
+    }
+    int r1, c1, r2, c2, s;
+    findMaxSubmatrix(matrix, m, n, r1, c1, r2, c2, s);
+    out << r1 + 1 << " " << c1 + 1 << " " << r2 + 1 << " " << c2 + 1 << " " << s << endl;
+    in.close();
+    out.close();
+    return 0;
+}
