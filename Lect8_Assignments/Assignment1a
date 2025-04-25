@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void merge(vector<double>& arr, int l, int m, int r) {
+    int n1 = m - l + 1;
+    int n2 = r - m;
+
+    vector<double> L(n1), R(n2); // Tạo 2 arr tạm 
+    for (int i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j]; // 2 arr lưu 2 phần trái phải của phần đag xét
+
+    int i = 0, j = 0, k = l;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        }
+        else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++; // Sắp xếp phần tử của 2 arr con 
+    }
+
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+    } // Nếu còn phần tử của 1 trong 2 arr con chưa được sắp xếp thì đẩy vào cuối
+}
+
+void mergeSort(vector<double>& arr, int l, int r) {
+    if (l < r) {
+        int m = l + (r - l) / 2; // Tách arr thành 2 phần 
+        mergeSort(arr, l, m); 
+        mergeSort(arr, m + 1, r); // Tiếp tục chia nhỏ từng phần đến 1 phần tử 
+        merge(arr, l, m, r); 
+    }
+}
