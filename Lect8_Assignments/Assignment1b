@@ -1,0 +1,24 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int partition(vector<double>& arr, int low, int high) {
+    double pivot = arr[high]; // Đặt pivot ở cuối
+    int i = low - 1;
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]); // Đẩy các phần tử nhỏ hơn pivot lên đầu
+        }
+    }
+    swap(arr[i + 1], arr[high]); // Đẩy pivot vào sau các phần tử nhỏ hơn nó 
+    return i + 1; 
+}
+
+void quickSort(vector<double>& arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high); // Tách thành 2 mảng lớn hơn và nhỏ hơn pivot 
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high); // Tiếp tục sắp xếp các mảng con 
+    }
+}
