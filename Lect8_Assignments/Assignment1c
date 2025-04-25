@@ -1,0 +1,32 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int hoarePartition(vector<double>& arr, int low, int high) { // Hàm phân hoạch Hoare
+    double pivot = arr[low]; // Chọn pivot là phần tử đầu
+    int i = low - 1;
+    int j = high + 1;
+
+    while (true) {
+        do {
+            i++;
+        } while (arr[i] < pivot); // Tìm phần tử >= pivot từ trái
+
+        do {
+            j--;
+        } while (arr[j] > pivot); // Tìm phần tử <= pivot từ phải
+
+        if (i >= j)
+            return j; // Nếu 2 con trỏ gặp nhau thì trả về
+
+        swap(arr[i], arr[j]); // Đổi chỗ 2 phần tử 
+    }
+}
+
+void quickSortHoare(vector<double>& arr, int low, int high) {
+    if (low < high) {
+        int pi = hoarePartition(arr, low, high); // Phân hạch thành 2 mảng lớn hơn và nhỏ hơn pivot
+        quickSortHoare(arr, low, pi);
+        quickSortHoare(arr, pi + 1, high); // Tiếp tục phân hạch các mảng con
+    }
+}
