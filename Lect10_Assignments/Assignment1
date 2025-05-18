@@ -1,0 +1,40 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void dfs(int node, vector<vector<int>>& adj, vector<bool>& visited) { // Hàm duyệt dfs
+    visited[node] = true; // Đánh dấu node đag xét là đã thăm
+    for (int neighbor : adj[node]) { // Duyệt từng phần tử kề 
+        if (!visited[neighbor]) {
+            dfs(neighbor, adj, visited); // Nếu phần tử chưa được thăm thì gọi đệ quy dfs
+        }
+    }
+}
+
+int countConnectedComponents(int n, vector<vector<int>>& adj) { // Hàm đếm các thành phần liên thông
+    vector<bool> visited(n + 1, false); // Khởi tạo hàm đánh dấu 
+    int count = 0; // Biến đếm số thành phần liên thông
+    for (int i = 1; i <= n; ++i) { // Duyệt từng phần tử chưa đánh dấu
+        if (!visited[i]) {
+            dfs(i, adj, visited); // Duyệt dfs
+            count++;
+        }
+    }
+    
+    return count;
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> adj(n + 1); // Danh sách kề
+    for (int i = 0; i < m; ++i) {
+        int x, y;
+        cin >> x >> y;
+        adj[x].push_back(y);
+        adj[y].push_back(x);
+    }
+    int components = countConnectedComponents(n, adj);
+    cout << components << endl;
+    return 0;
+}
