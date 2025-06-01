@@ -1,0 +1,31 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> heap;
+
+// Hàm đẩy phần tử lên đúng vị trí
+void heapifyUp(int index) {
+    while (index > 0) {
+        int parent = (index - 1) / 2;
+        if (heap[index] > heap[parent]) { // So sánh phần tử mới với node cha
+            swap(heap[index], heap[parent]);
+            index = parent; // Nếu lớn hơn thì đẩy lên
+        }
+        else break;
+    }
+}
+
+// Hàm chèn phần tử mới vào heap
+void insert(int val) {
+    heap.push_back(val); // Thêm phần tủ mới vào vị trí cuối cùng của mảng
+    heapifyUp(heap.size() - 1); // Đẩy phần tử mới lên đúng vị trí
+}
+
+int main() {
+    int arrA[] = { 2, 19, 38, 29, 66, 64, 72, 3, 16, 89, 15, 37, 20, 28, 73, 5 };
+    for (int num : arrA) insert(num);
+    int arrB[] = { 5, 13, 9, 7, 24, 4, 6 };
+    for (int num : arrB) insert(num);
+    return 0;
+}
