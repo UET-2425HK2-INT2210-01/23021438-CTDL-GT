@@ -1,0 +1,25 @@
+FUNCTION PowerOfTwo(n)
+    IF n == 0
+        RETURN 1
+    END IF
+    result = 1
+    FOR i FROM 1 TO n DO
+        result = result * 2
+    END FOR
+    RETURN result
+END FUNCTION
+Độ phức tạp O(n)
+
+FUNCTION FastPowerOfTwo(n)
+    IF n == 0
+        RETURN 1
+    END IF
+    IF n % 2 == 0
+        half = FastPowerOfTwo(n / 2)
+        RETURN half * half
+    ELSE
+        half = FastPowerOfTwo((n - 1) / 2)
+        RETURN 2 * half * half
+    END IF
+END FUNCTION
+Độ phức tạp o(logn)
