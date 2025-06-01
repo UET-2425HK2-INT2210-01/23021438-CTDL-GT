@@ -1,0 +1,16 @@
+Bảng băm với m = 11
+Hàm băm: h(k) = k mod m
+
+Index  Học sinh (id, name)
+0	      (11, Cu)
+1	          -
+2	          -
+3	      (3, Be)
+4	      (4, Da)
+5	      (5, Go)
+6	      (16, En)
+7	      (7, An)
+8	      (8, Gi)
+9	      (21, Ba)
+10	        -
+// Không va chạm nên không cần xử lý
